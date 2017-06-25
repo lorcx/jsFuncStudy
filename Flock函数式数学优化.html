@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>seagulls 海鸥</title>
+</head>
+<body>
+	Conjoin 联合
+	Breed 繁殖
+	
+</body>
+<script type="text/javascript">
+ 	var conjoin = function(flock_x, flock_y) {
+ 		return flock_x + flock_y;
+ 	};
+
+ 	var breed = function(flock_x, flock_y) {
+ 		return flock_x * flock_y;
+ 	};
+
+ 	var flock_a = 4;
+ 	var flock_b = 2;
+ 	var flock_c = 0;
+
+ 	var result = conjoin(breed(flock_b, conjoin(flock_a, flock_c)), breed(flock_a, flock_b));
+ 	console.log(result);
+</script>
+
+<script type="text/javascript">
+ 	var add = function(x, y) {
+ 		return x + y;
+ 	};
+
+ 	var multiply = function(x, y) {
+ 		return x * y;
+ 	};
+
+ 	var flock_a = 4;
+ 	var flock_b = 2;
+ 	var flock_c = 0;
+
+ 	var result1 = add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b))l;
+ 	console.log(result1);
+
+ 	/**
+ 	// 结合律 （assosiative）
+ 	add(add(x, y), z) == add(x, add(y, z));
+
+ 	// 交换律
+ 	add(x, y) == x;
+
+ 	// 分配律
+ 	multiply(x, add(y, z)) == add(multiply(x, y), multiply(x, z));
+	*/
+
+	// 原有代码
+	add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b));
+
+	// 应用同一律，去掉多余的加法操作 (add(flock_a, flock_c) == flock_a)
+	add(multiply(flock_b, flock_a), multiply(flock_a, flock_b));
+
+	// 再应用分配律
+	multiply(flock_b, add(flock_a, flock_a));	
+</script>
+</html>

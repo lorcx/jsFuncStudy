@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第三章</title>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+ 	// 纯函数
+ 	var xs = [1, 2, 3, 4, 5];
+ 	var newXs = xs.slice(0, 3);
+ 	console.log(newXs);
+
+ 	// 不纯的
+ 	xs.splice(0 ,3);
+ 	console.log(xs);
+ 	xs.splice(0 ,3);
+ 	console.log(xs);
+ 	xs.splice(0 ,3);
+ 	console.log(xs);
+
+ 	// 纯函数的含义是：对同一个输入不管输入多少次，他都会返回相同的结果
+
+ 	// 例2
+
+ 	// 不纯
+ 	var minimum = 21;
+
+ 	var checkAge = function(age) {
+ 		return age >= minimum;
+ 	};
+
+ 	// 纯的
+ 	var checkAge = function(age) {
+ 		var minimum = 21;
+ 		return age = minimum;
+ 	};
+
+ 	/**
+ 		不纯的版本是因为其结果取决于minimum这个变量，它取觉与外部系统状态，而依赖这种状态是影响系统复杂度的罪魁祸首。
+ 	 */
+ 	 var immutableState = Object.freeze({minimum: 21});
+ 	 // 副作用是在计算结果的过程中，系统状态的一种变化，或者与外部世界进行的可观察的交互。
+
+ 	 //只要跟外部环境发生的交互就是副作用
+
+ 	 
+</script>
+</html>

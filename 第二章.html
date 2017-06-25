@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>seagulls 海鸥</title>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+	var hi = function(name) {
+		return "Hi" + name;
+	};
+
+	var greeting = function(name) { 
+		return hi(name);
+	};
+	//console.log(hi);
+	//console.log(hi('jonas'));
+
+</script>
+
+<script type="text/javascript">
+	//将上面的代码简化
+	// 函数表达式是通过引用来调用的
+	var hi = function(name) {
+		return "Hi" + name;
+	};
+
+	var greeting = hi;
+
+	console.log(greeting('times'));
+
+</script>
+
+
+<script type="text/javascript">
+	// 太傻了
+	var getServerStuff = function(callback) {
+		return ajaxCall(function(json) {
+			return callback(json);
+		});
+	}; 
+
+	// 改
+	var getServerStuff = ajaxCall;
+
+	// 这行
+	return ajaxCall(function(json) {
+		return callback(json);
+	});
+
+	//等价于
+	return ajaxCall(callback);
+
+	// 重构getServerStuff
+	var getServerStuff = function(callback) {
+		return ajaxCall(callback);
+	};
+
+	// 等于
+	var getServerStuff = ajaxCall;
+</script>
+
+<script type="text/javascript">
+	var BlogController = (function() {
+		var index = function(posts) {
+			return Views.index(posts);
+		};	
+
+		var show = function(post) {
+			return Views.show(post);
+		};
+
+		var create = function(attrs) {
+			return Db.create(attrs);
+		};
+
+		var update = function(post) {
+			return Db.update(post);
+		};
+
+		var destory = function(post) {
+			return Db.destory(post);
+		};
+
+		return {index: index, show: show, create: create, update: update, destory: destory}; 
+		
+
+	})();
+
+	//可以将控制器改写为
+	var BlogController = {index: Views.index, show: Views.show, create: Db.create, update: Db.update, destroy: Db.destroy};
+
+
+</script>
+
+
+
+<script type="text/javascript">
+	 httpGet('/post/2', function(json) {
+	 	return renderPost(json);
+	 });
+
+	// 如果httpGet要改成一个可能出现的err异常，那我们还得回头把胶水函数也给改了
+	 httpGet('/post/2', function(json, err) {
+	 	return renderPost(json, err);
+	 });
+
+	// 重构成一等函数
+	httpGet('/post/2', renderPost);	
+</script>
+
+</html>
