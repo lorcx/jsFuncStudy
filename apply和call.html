@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>js apply 和 call 用法</title>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+	//fruits 水果
+
+	// 例1 复用say方法
+	function fruits() {}
+
+	fruits.prototype = {
+		color: 'red',
+		say: function() {
+			console.log("My color is " + this.color);
+		}
+	};
+
+	var apple = new fruits;
+	apple.say(); //My color is red
+
+	banana = {
+		color: 'yellow'
+	};
+
+	apple.say.call(banana);//My color is yellow
+	apple.say.apply(banana);//My color is yellow
+	/**
+	 * apply和call的区别是接收的参数不一样
+	 * func.call(this, arg1, arg2); 适用与参数固定
+	 * func.apply(this, [arg1, arg2]) 适用于参数不固定
+	 */
+</script>
+<script type="text/javascript">
+	// 例2 数组追加
+	var array1 = [12, 'foo', {name: 'joe'}, -2358];
+	var array2 = ['Doe', 555, 100];
+	Array.prototype.push.apply(array1, array2); // 这回修改原数组
+	console.log(array1);
+	Array.prototype.push.call(array1, 'Doe', 555, 100);
+	console.log(array1);
+
+	// 例3 获取数组中最大的值和最小值
+	var numbers = [5, 456, 120, -214];
+	var maxInNumbers = Math.max.apply(Math, numbers);
+	console.log(maxInNumbers);
+	maxInNumbers = Math.max.call(Math, 5, 456, 120, -214);
+	console.log(maxInNumbers);
+
+	var maxInNum = Math.max(2,3);
+	console.log(maxInNum);
+
+	// 例2 验证是否是数组 (前提是toString没有被重写)
+	function isArray(obj) {
+		return Object.prototype.toString.call(obj) === '[object Array]';
+	}
+
+	var b = isArray(numbers);
+	console.log(b);
+	b = isArray(1);
+	console.log(b);
+	
+
+	// 例3 类（伪）数组使用数组方法
+	var domNodes = Array.prototype.slice.call(document.getElementsByTagName("*"));
+	console.log(domNodes.length);
+</script>
+<script type="text/javascript">
+	//定义一个 log 方法，让它可以代理 console.log 方法，常见的解决方法是：
+	function log(msg) {
+		console.log(msg);
+	}
+	log(1);
+	log(2);
+
+	// 上面方法可以解决最基本的需求，但是当传入参数的个数是不确定的时候，
+	//上面的方法就失效了，这个时候就可以考虑使用 apply 或者 call，
+	//注意这里传入多少个参数是不确定的，所以使用apply是最好的，方法如下：
+	function log() {
+		console.log.apply(console, arguments);
+	}
+	log(1); // 1
+	log(1, 2); // 1 2
+	
+	//给每一个 log 消息添加一个"(app)"的前辍，比如：
+	function log1() {
+		var arg = Array.prototype.slice.call(arguments);
+		arg.unshift('(app)');
+		console.log.apply(console, arg);
+	}
+
+	log1(1);
+</script>
+<script type="text/javascript">
+// bind 的用法
+// bind()方法会创建一个新函数，称为绑定函数，
+//当调用这个绑定函数时，绑定函数会以创建它时传入 bind()方法的第一个参数作为 this，
+//传入 bind() 方法的第二个以及以后的参数加上绑定函数运行时本身的参数按照顺序作为原函数的参数来调用原函数。		
+	
+	// 在常见的单体模式中，通常我们会使用 _this , that , self 等保存 this ，这样我们可以在改变了上下文之后继续引用到它。 像这样
+	var foo = {
+		bar: 1,
+		eventBind: function() {
+			var _this = this;
+			$('.someClass').on('click', function(event) {
+				console.log(_this.bar);
+			});
+		}
+	}
+
+	//由于 Javascript 特有的机制，上下文环境在 eventBind:function(){ } 过渡到 $('.someClass').on('click',function(event) { }) 发生了改变，上述使用变量保存 this 这些方式都是有用的，也没有什么问题。当然使用 bind() 可以更加优雅的解决这个问题：
+	var foo = {
+		bar: 1,
+		eventBind: function() {
+			$('.someClass').on('click', function(event) {
+				console.log(this.bar);
+			}.bind(this));
+		}
+	}
+
+
+	// 例2
+	var bar = function() {
+		console.log(this.x);
+	}
+	var foo = {
+		x: 3
+	}
+	bar();
+	var func = bar.bind(foo);
+	func();
+
+</script>
+<script type="text/javascript">
+	
+	// apply call bind 比较
+	var obj = {
+		x: 81
+	}
+	var foo = {
+		getX: function(){
+			return this.x;
+		}
+	}
+	console.log(foo.getX.bind(obj)());
+	console.log(foo.getX.call(obj));
+	console.log(foo.getX.apply(obj));
+	// 当希望改变上下文环境后并非立即执行，而是回调执行的时候，使用bind。 而apply/call 则会立即执行函数。
+	// apply call bind 三者都是用来改变函数的this对象指向的。
+	// apply call bind 三者第一个参数都是this要指向的对象，也就是想要指向的上下文。
+	// apply call bind 三者都可以利用后续参数传参。
+	
+</script>
+</html>

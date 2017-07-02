@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>第四章</title>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+	//curry 的概念: 只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。
+	
+	//你可以一次性地调用 curry 函数，也可以每次只传一个参数分多次调用。
+	var add = function(x) {
+		return function(y) {// 通过闭包的形式 记住了x
+			return x + y;
+		};
+	};
+	var increment = add(1);
+	var addTen = add(10);
+
+	console.log(increment(2));
+	console.log(addTen(2));
+
+</script>
+<script type="text/javascript">
+	var curry = require('lodash').curry;
+	var match = curry(function (what, str) {
+		return str.match(what);
+	});
+
+	var replace = curry(function(what, replacement, str) {
+		return str.replace(what, replacement);
+	});
+
+	var filter = curry(function(f, ary) {
+		return ary.filter(f);
+	});
+
+	var map = curry(function(f, ary) {
+		return ary.map(f);
+	});
+	// 上面的代码中遵循的是一种简单，
+	//同时也非常重要的模式。即策略性地把要操作的数据（String， Array）放到最后一个参数里
+</script>
+</html>
